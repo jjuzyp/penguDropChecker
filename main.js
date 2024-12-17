@@ -5,7 +5,7 @@ const filePath = path.join(__dirname, 'wallets.txt');
 
 fs.readFile(filePath, 'utf8', (err, data) => {
   if (err) {
-    console.error('Ошибка при чтении файла:', err);
+    console.error('Error reading file:', err);
     return;
   }
 
