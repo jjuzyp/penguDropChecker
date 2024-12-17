@@ -11,7 +11,8 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 
   const wallets = data.trim().split('\n');
   let completedRequests = 0;
-
+  let totalTokens = 0;
+  let totalUnclaimedTokens = 0;
   const processWallet = (wallet, index) => {
     fetch(`https://api.clusters.xyz/v0.1/airdrops/pengu/eligibility/${wallet}`)
       .then(response => {
@@ -24,6 +25,8 @@ fs.readFile(filePath, 'utf8', (err, data) => {
         const total = data.total;
         const totalUnclaimed = data.totalUnclaimed;
         console.log(`For wallet ${wallet} Total: ${total}, Total Unclaimed: ${totalUnclaimed}`);
+        totalTokens = totalTokens + data.total;
+        totalUnclaimedTokens = totalUnclaimedTokens + data.totalUnclaimed;
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
@@ -31,7 +34,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
       .finally(() => {
         completedRequests++; 
         if (completedRequests === wallets.length) {
-          console.log('Press enter to exit...');
+          console.log('All', completedRequests, 'wallets have been checked with total of', totalTokens, 'tokens, claimable', totalUnclaimedTokens,'! Press enter to exit...');
           process.stdin.on('data', (data) => {
             process.exit(0);
           });
