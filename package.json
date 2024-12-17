@@ -1,0 +1,23 @@
+{
+  "name": "penguchecker",
+  "version": "1.0.0",
+  "main": "main.js",
+  "bin": {
+    "penguchecker": "main.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "pkg": {
+    "targets": [
+    "node18-win-x64"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}
