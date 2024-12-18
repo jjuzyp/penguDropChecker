@@ -32,7 +32,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
       .finally(() => {
         completedRequests++; 
         if (completedRequests === wallets.length) {
-          console.log('All', completedRequests, 'wallets have been checked with total of', total, 'tokens', totalUnclaimed, 'claimable! Press enter to exit...');
+          console.log('All', completedRequests, 'wallets have been checked with total of', total, 'tokens,', totalUnclaimed, 'claimable! Press enter to exit...');
           process.stdin.on('data', (data) => {
             process.exit(0);
           });
