@@ -24,7 +24,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
       .then(data => {
         console.log(`For wallet ${wallet} Total: ${data.total}, Total Unclaimed: ${data.totalUnclaimed}`);
         total += data.total;
-        totalUnclaimed += + data.totalUnclaimed;
+        totalUnclaimed += data.totalUnclaimed;
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
