@@ -11,9 +11,9 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 
   const wallets = data.trim().split('\n');
   let completedRequests = 0;
-  let totalTokens = 0;
-  let totalUnclaimedTokens = 0;
-  const processWallet = (wallet, index) => {
+  let total = 0;
+  let totalUnclaimed = 0;
+  const checkWallet = (wallet) => {
     fetch(`https://api.clusters.xyz/v0.1/airdrops/pengu/eligibility/${wallet}`)
       .then(response => {
         if (!response.ok) {
@@ -22,11 +22,9 @@ fs.readFile(filePath, 'utf8', (err, data) => {
         return response.json();
       })
       .then(data => {
-        const total = data.total;
-        const totalUnclaimed = data.totalUnclaimed;
-        console.log(`For wallet ${wallet} Total: ${total}, Total Unclaimed: ${totalUnclaimed}`);
-        totalTokens = totalTokens + data.total;
-        totalUnclaimedTokens = totalUnclaimedTokens + data.totalUnclaimed;
+        console.log(`For wallet ${wallet} Total: ${data.total}, Total Unclaimed: ${data.totalUnclaimed}`);
+        total += data.total;
+        totalUnclaimed += + data.totalUnclaimed;
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
@@ -34,7 +32,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
       .finally(() => {
         completedRequests++; 
         if (completedRequests === wallets.length) {
-          console.log('All', completedRequests, 'wallets have been checked with total of', totalTokens, 'tokens, claimable', totalUnclaimedTokens,'! Press enter to exit...');
+          console.log('All', completedRequests, 'wallets have been checked with total of', total, 'tokens', totalUnclaimed, 'claimable! Press enter to exit...');
           process.stdin.on('data', (data) => {
             process.exit(0);
           });
@@ -44,7 +42,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 
   wallets.forEach((wallet, index) => {
     setTimeout(() => {
-      processWallet(wallet.trim(), index);
-    }, index * 3000);
+      checkWallet(wallet.trim());
+    }, index * 1000);
   });
 });
